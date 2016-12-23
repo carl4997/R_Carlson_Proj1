@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		
+	<link href="https://fonts.googleapis.com/css?family=Antic+Didone|Arapey|Josefin+Sans" 
+	rel="stylesheet">
+		
+		<script type="text/javascript" src=d3.min.js></script>
+		<title>Nitrogen Conundrum</title>
+
+
+<style>
+
+  #container {
+    width: 960px;
+    fill: #4b5b4a;
+   
+  }
+
+  #column {
+    width: 478px;
+    display: inline-block;
+    margin-left: 15px;
+  }
+  
+
+  #shape {
+    width: 500px;
+    height: 125px;
+    background-color:#4b5b4a;
+    margin: 20px;
+    margin-top: 20px;
+  }
+	#chart {
+		width: 800px;
+		height:   375px;
+		margin-left: 70px;
+		margin-top: -70px;
+	}
+	
+	#info1 {
+	 width: 25px;
+	 height: 15px;
+	 margin-left: 100px;
+	 margin-top: 70px;
+	}
+	
+	#info2 {
+	 width: 25px;
+	 height: 15px;
+	 margin-left: 100px;
+	 margin-top: 170px;
+	}
+	
+	#info3 {
+	 width: 25px;
+	 height: 15px;
+	 margin-left: 1000px;
+	 margin-top: 270px;
+	}
+	  
+ 
+	path {
+  		stroke-width: 2;
+  		fill: none;
+	}
+
+   .text{
+      font-family: Josefin Sans;
+      font-size: 1em;
+      color: #4f361a;
+      line-height: 1.3em;
+      letter-spacing: 0;
+      text-align: left;
+      text-indent: 0;
+      width: 974px;
+      margin-left: 20px;
+    }
+    
+  .ylabel{
+    font-family: Josefin Sans;
+    font-size: .75em;
+    color: #ff971a;
+    line-height: 1.3em;
+    letter-spacing: 0;
+    text-align: left;
+    text-indent: 0;
+    width: 50px;
+    height: 40px;
+    margin-left: 20px;
+    margin-top: 30px;
+  }
+  
+  .y2label{
+    font-family: Josefin Sans;
+    font-size: .75em;
+    color: #3e6549;
+    line-height: 1.3em;
+    letter-spacing: 0;
+    text-align: left;
+    text-indent: 0px;
+    width: 50px;
+    height: 40px;
+    margin-left: 670px;
+    margin-top: -50px;
+  }
+    
+  .info1{
+    font-family: Josefin Sans;
+    font-size: 1em;
+    color: #4f361a;
+    line-height: 1.3em;
+    letter-spacing: 0;
+    text-align: left;
+    text-indent: 0;
+    width: 200px;
+    height: 150px;
+    margin-left:20px;
+    margin-top: -330px;
+  }
+  
+ .info2{
+    font-family: Josefin Sans;
+    font-size: 1em;
+    color: #4f361a;
+    line-height: 1.3em;
+    letter-spacing: 0;
+    text-align: left;
+    text-indent: 0;
+    width: 200px;
+    height: 150px;
+    margin-left: 320px;
+    margin-top: -168px;
+    }
+  
+ .info3{
+    font-family: Josefin Sans;
+    font-size: 1em;
+    color: #4f361a;
+    line-height: 1.3em;
+    letter-spacing: 0;
+    text-align: left;
+    text-indent: 0;
+    width: 200px;
+    height: 150px;
+    margin-left: 620px;
+    margin-top: -168px;
+    }    
+    
+  .title {
+    font-family: Antic Didone;
+    font-size: 4em;
+    color: #ff971a;
+    letter-spacing: 0;
+    word-spacing: 0;
+    text-align: left;
+    height: 40px;
+    margin-left: 20px;
+    margin-top: 0px;
+  }
+  
+  .subtitle {
+    font-family: Antic Didone;
+    font-size: 1.5em;
+    color: #ff971a;
+    letter-spacing: 0;
+    word-spacing: 0;
+    text-align: left;
+    height: 30px;
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+  
+	.axis_t path,
+	.axis_t line {
+		fill: none;
+		stroke: #4f361a;
+		stroke-width: 0.5;
+	}
+
+	.axis_t text {
+  		font: 10px Josefin Sans;
+  		fill: #4f361a;
+	}
+ 
+	.axis_n path,
+	.axis_n line {
+		fill: none;
+		stroke: #ff971a;
+		stroke-width: 0;
+	}
+
+	.axis_n text {
+  		font: 10px Josefin Sans;
+  		fill: #ff971a;
+	}
+
+	.axis_c path,
+	.axis_c line {
+		fill: none;
+		stroke: #3e6549;
+		stroke-width: 0;
+	}
+
+	.axis_c text {
+  		font: 10px Josefin Sans;
+  		fill: #3e6549;
+	}
+	
+	.tooltip {
+  		position: relative;
+  		width: 100px;
+  		height: 28px;
+  		font-family: Josefin Sans;
+  		text-align: center;
+  		color: white;
+  		pointer-events: none;
+	}
+
+	.circle {
+		  fill: #60231b;
+   		stroke: #60231b;
+   		stroke-width: 2;
+   		-webkit-transition: 0.5s;
+	}
+
+	.circle:hover {
+		r: 20px;
+		fill: #60231b;
+   		-webkit-transition: r 0.5s;
+	}
+ 
+  </style>
+</head>  
+  
+<body>
+<div id="shape">
+ 
+ <div id="containter">
+    <div class="column">
+      <h1 class="title">Nitrogen</h>
+    </div>
+    
+    <div class="column">
+      <h4 class="subtitle">Feeding the World or Destroying it?</h4>
+    </div>
+  </div>
+  </div>
+  
+    <div class="column">
+      <p class="text">Nitrogen is a necessary element for plant growth. While nitrogen (N) is abundant in the air, the atom is only able to be utilized by plants, and therefore life, in a specific and limited form found in the soil.  For plants, the more usable nitrogen it has access to, the better the plant grows. In terms of agriculture, the more nitrogen a crop has access to, the more food is produced. Prior to the discovery of synthetically produce nitrogen, the world population was limited by the amount of crops grown on natural sources of N. However, with the advent of synthetic nitrogen, crop productivity rose and more mouths could be fed on less land. Yet this application comes at a cost. The more chemicals applied to the landscape, the greater risk of environmental harm. The graph below shows how crop production has risen over the years with increase nitrogen application.</p>
+    </div>
+
+
+  <div id"container1">
+    <div class="column">
+      <p class ="ylabel">Synthetic N applied (per 1000 lbs)</p>
+      </div>
+      </div>
+  
+  <div id"container2">    
+    <div class="column">  
+      <p class ="y2label">Crop productivity (bushels / acre)</p>
+    </div> 
+   </div>
+   
+    <div id="chart">
+      <svg width="800" height="375">
+      <g transform="translate(50,30)">
+        <path stroke=#ffb517 ></path>
+        <path stroke=#3e6549 ></path>
+      <g class="x axis" transform=translate(0,1960)>
+        <g class="tick" transform="translate(40,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">1960</text>        </g
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">1970</text>
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">1980</text>
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">1980</text>
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">1990</text>
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line> 
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">2000</text>
+        <g class="tick" transform="translate(140,0)" style="opacity: 1;">
+            <line y2="6" x2="0"></line>
+            <text dy=".7em" y="9" x="0" style="text-anchor: middle;">2010</text>
+      <path class="domain"d="M0,6V0H1130V6"></path>
+      </g>  
+      
+      <g class="y axis"> 
+        <g class="tick" transform="translate(0,200)" style="opacity: 1;">
+            <line x2="-6" y2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">3,000</text>
+            </g>
+        <g class="tick" transform="translate(160,0)" style="opacity: 1;">
+            <line x2="-6" y2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">6,000</text>
+            </g>
+        <g class="tick" transform="translate(0,120)" style="opacity: 1;">
+            <line x2="-6" y2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">9,000</text>
+            </g>    
+        <g class="tick" transform="translate(0,80)" style="opacity: 1;">
+            <line x2="-6" y2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">12,000</text>
+            </g>
+        <g class="tick" transform="translate(0,40)" style="opacity: 1;">
+            <line x2="-6" y2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">15,000</text>
+            </g>
+      </g>
+      
+      <g class="cy axis">
+        <g class="tick" transform="translate(140,200)" style="opacity: 1;">
+            <line x2="-6" x2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">100</text>
+            </g>
+        <g class="tick" transform="translate(140,140)" style="opacity: 1;">
+            <line x2="-6" x2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">150</text>
+            </g>
+        <g class="tick" transform="translate(140,80)" style="opacity: 1;">
+            <line x2="-6" x2="0"></line> 
+            <text dy=".4em" x="-9" y="0" style="text-anchor: end;">200</text>
+            </g>
+        
+      </g>
+
+      </svg>
+      
+      </div>
+      
+      
+    </div>
+    
+    <div id"info1">
+      <div class="column">
+      <p class="info1">After World War II, the application of synthetic nitrogen to agricultural land grew significantly, exposing land to a new element.</p>
+    </div>
+    </div>
+    
+    <div id"info2">
+      <div class="column">
+      <p class="info2">With the advent of synthetically applied N, farmers began to produce to higher yields, thus feeding more people on the same amount of land.</p>
+    </div>
+    </div>
+    
+    <div id"info3">
+      <div class="column">
+      <p class="info3">While there is a direct correlation ofamount of N app- lied with yield, there is also a correlation with environmental harm. Is it ethical to continue applying more N for greater yield when we know the ecological harm?</p>
+    </div>
+    </div>
+<script>
+
+	d3.csv("data/n_data.csv", function(error, data) {
+
+  var markers = ["one","two","three"];
+  
+	var parseDate = d3.time.format("%Y").parse;
+
+	data.forEach(function(d) {
+		d.date = parseDate(d.date);
+		d['n']  = +d['n'];
+		d['crop'] = +d['crop'];
+		d['select'] = +d['select'];
+	});
+
+	var padding = {top: 30, right: 60, bottom: 30, left: 60};
+	var w = 600 - padding.left - padding.right;
+	var h = 270 - padding.top - padding.bottom;
+
+	var xScale = d3.time.scale()
+		.domain([0,d3.extent(data, function(d) {return d.date;})])
+		.range([0, w]);
+
+	var yScale = d3.scale.linear()
+		.domain([2000, d3.max(dataset, function(d) {return d['n'];})])
+		.range([h, 0]);
+
+	var cyScale = d3.scale.linear()
+		.domain([0, d3.max(dataset, function(d) {return d['crop'];})])
+		.range([h, 10]);
+
+
+	var svg = d3.select("#chart")
+	    .append("svg")
+	  	.attr("width", w + padding.left + padding.right)
+		  .attr("height", h + padding.top + padding.bottom)
+	    .append("g")
+		  .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+
+	var nline = d3.svg.line()
+	    .x(function(d) { return xScale(d.date); })
+	    .y(function(d) { return yScale(+d['n']); });
+
+  	svg.append("path")	
+  		.attr("stroke", "#ff971a")
+  		.attr("d", nline(data));
+		
+  var cline = d3.svg.line()
+	    .x(function(d) { return xScale(d.date); })
+	    .y(function(d) { return cyScale(+d['crop']); });
+
+  	svg.append("path")
+  		.attr("stroke", "#4b5b4a")
+  		.attr("d", cline(data));
+
+
+// Setting the Axes
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom")
+    .outerTickSize(0)
+    .ticks(5);
+
+svg.append("g").call(xAxis)	
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + h + ")");
+
+var yAxis = d3.svg.axis()
+    .scale(yScale)
+	  .outerTickSize(0)
+	  .orient("left")
+    .ticks(5);
+  
+  svg.append("g").call(yAxis)	
+  	.attr("class", "yAxis");
+
+var cyAxis = d3.svg.axis()
+    .scale(cyScale)
+	.orient("right")
+    .ticks(3);
+
+  svg.append("g").call(cyAxis)
+  	.attr("transform", "translate(" + (w) + ",0)")
+  	.attr("class", "y axis_c");
+
+        svg.selectAll(".tick")
+          .each(function(d) {
+              if (d === 0) {
+                  this.remove();
+              }
+          });
+
+
+
+//------------------------------------//
+// Interactive D3 Components
+
+
+		var tooltip = d3.select("#chart").append("div")
+   			.attr("class", "tooltip")
+    		.style("opacity", 0);
+
+		svg.selectAll("dots")
+			.data(data)
+			.enter()
+			.append("circle")
+			.filter(function(d) {
+				return d.select == 1
+			})
+			.attr("id", function(d,i) {return markers[i];})
+			.attr("cx", function(d) {
+				return xScale(d.date); 
+			})
+			.attr("cy", function(d) {
+				return yScale(d.n); 
+			})
+			.attr("class","circle")
+			.attr("cx", function(d) {
+				return xScale(d.date);
+			})
+			.attr("cy", function(d) {
+				return yScale(d.n);
+			})
+			.attr("r", function(d) {
+				return 5;
+			})
+			.on("mouseover", function(d) {
+
+				this.parentNode.appendChild(this);
+
+          		tooltip.transition()
+                .duration(200)
+                .style("opacity", 1);
+          		
+          		tooltip.html(": " + d.n + "<br> N <br> Crop")
+          		.style("left", xScale(d.date) + -15 + "px")
+                .style("top", yScale(d.n) + "px");
+
+      		})
+      		.on("mouseout", function(d) {
+          		tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);
+      		});
+
+// End of Interactive D3 Components
+//---------------------------------//
+
+
+  document.getElementById("one").onmouseover = function() { 
+      document.getEementById("c1").style.opacity=1;
+  }
+  
+  document.getElementById("one").onmouseleave = function() { 
+      document.getEementById("c1").style.opacity=0;
+  }
+
+
+}); // end of d3 code
+
+
+ 
+</script> 
+	  
+</body>
+ 
+
+</html>
